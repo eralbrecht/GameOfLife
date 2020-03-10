@@ -19,5 +19,5 @@ public:
 	Grid();
 	~Grid();
 	char GetCellContents(int x, int y);
-	void WorldGenerateFromConsole(int height, int width, double popDensity);
+	void WorldGenerateFromConsole(int h, int w, double popDensity);
 };

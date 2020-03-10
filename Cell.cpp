@@ -6,4 +6,4 @@ this class will:
 	generate life in a cell
 	analyze surrounding cells in the grid to see if theyre alive or dead
 */
-#include <iostream>
+//#include <iostream>
