@@ -1,6 +1,8 @@
 //Rose Albrecht 2300456 ealbrecht@chapman.edu GameOfLife
 #include <iostream>
 #include <fstream>
+#include<string>
+#include <sstream>
 //#include "Grid.h"
 //#include "Cell.cpp"
 using namespace std;
@@ -13,6 +15,23 @@ int main()
 	cout<<"options include donut, mirror, or classic"<<"\n";
 	string gameMode;
 	cin>> gameMode;
+	cout << "would you like to print to console or a text file enter c or txt?" << "\n";
+	string outputMode;
+	cin >> outputMode;
+	//initiate the file for if we decide we want to print to it
+	ofstream outputfile;
+	outputfile.open("rosealbrechtoutput.txt", ios::out | ios::app);
+	if (outputMode == "txt")
+	{
+		outputfile << "RoseAlbrecht 2300456" << "\n";
+		outputfile << "Game Of Life" << "\n";
+		outputfile << "Starting Game Board" << "\n";
+	}
+	if (outputMode == "c")
+	{
+		cout << "RoseAlbrecht 2300456" << "\n";
+		cout << "Starting Game Board" << "\n";
+	}
 	cout<<"would you like to provide a map file"<<"\n";
 	cout<<"for a map of the world in which the"<<"\n";
 	cout<<"simulation would occur? y or n"<<"\n";
@@ -28,42 +47,73 @@ int main()
 		cout << "empty cells as '-' living cells as 'X' with no other charachters present" << "\n";
 		cout << "each row of cells should be a new line in the input file" << "\n";
 		cin >> fileName;
-		ifstream inputfile;
-		inputfile.open(fileName);
-		//ifstream inputFile("myfile.txt");
-		int lineCount = 0;
-		string inputString;
-		cout << fileName << "input string" << "\n";
-		while (getline(inputfile, inputString))//used same as in assignment1
+		string stringofletters;
+		//ifstream inputfile;
+		//inputfile.open(fileName);
+		//int lineCount = 0;
+		stringstream str;
+		cout <<"above while loop" << "\n";
+		ifstream stream(fileName);
+		while (stream.peek() != EOF)
 		{
-			cout << inputString << "input string" << "\n";
+			cout << "streamispeeking";
+			str << (char)stream.get();
+		}
+		stream.close();
+		stringofletters = str.str();
+		
+		/*inputfile.open(fileName);
+		std::stringstream strStream;
+		strStream << inputfile.rdbuf();
+		string str = strStream.str();*/
+
+		//string str((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
+		cout << stringofletters << "string of the file";
+		/*while (std::getline(inputfile, str))//used same as in assignment1
+		{
+			cout << str << "inside while loop" << "\n";
 			lineCount += 1;
 			if (lineCount == 1)
 			{
-				columns = stoi(inputString);
+				columns = stoi(str);
 			}
 			if (lineCount == 2)
 			{
-				rows = stoi(inputString);
+				rows = stoi(str);
 			}
 			char world[columns][rows];
 			if (lineCount > 2)
 			{
-				for (char letter : inputString)
+				for (char letter : str)
 				{
 					for (int h = 1; h <= rows; h++)
 					{
 						for (int w = 1; w <= columns; w++)
 						{
 							world[w][h] = letter;
-							cout << world[w][h];
+							if (outputMode=="c");
+							{
+								cout << world[w][h];
+							}
+							if (outputMode=="txt");
+							{
+								outputfile << world[w][h];
+							}
+
 						}
-						cout << "\n";
+						if (outputMode == "c");
+						{
+							cout << "\n";
+						}
+						if (outputMode == "txt");
+						{
+							outputfile << "\n";
+						}
 					}
 				}
 			}
 			break;
-		}
+		}*/
 	}
 
 		//read the file enough to get height and width
@@ -103,7 +153,14 @@ int main()
 				{
 					world[w][h] = '-';
 				}
-				cout << world[w][h];
+				if (outputMode == "c");
+				{
+					cout << world[w][h];
+				}
+				if (outputMode == "txt");
+				{
+					outputfile << world[w][h];
+				}
 			}
 			cout << "\n";
 		}
