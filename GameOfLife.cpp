@@ -61,13 +61,6 @@ int main()
 		}
 		stream.close();
 		stringofletters = str.str();
-		
-		/*inputfile.open(fileName);
-		std::stringstream strStream;
-		strStream << inputfile.rdbuf();
-		string str = strStream.str();*/
-
-		//string str((istreambuf_iterator<char>(t)), istreambuf_iterator<char>());
 		cout << stringofletters << "string of the file";
 		/*while (std::getline(inputfile, str))//used same as in assignment1
 		{
