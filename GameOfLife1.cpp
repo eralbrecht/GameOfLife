@@ -1,0 +1,168 @@
+//Rose Albrecht 2300456 ealbrecht@chapman.edu GameOfLife
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <sstream>
+#include <cmath>
+//#include "Grid.h"
+//#include "Cell.cpp"
+using namespace std;
+int main()
+{
+	int columns;
+	int rows;
+	//add in game type options
+	cout << "what game version would you like to play?" << endl;
+	cout << "options include donut, mirror, or classic" << endl;
+	cout << "please enter 'd' 'm' or 'c'" << endl;
+	string gameMode;
+	cin >> gameMode;
+	cout << "would you like to print to console or a text file enter c or txt?" << endl;
+	string outputMode;
+	cin >> outputMode;
+	//initiate the file for if we decide we want to print to it
+	ofstream outputfile;
+	outputfile.open("rosealbrechtoutput.txt", ios::out | ios::app);
+	if (outputMode == "txt")
+	{
+		outputfile << "RoseAlbrecht 2300456" << endl;
+		outputfile << "Game Of Life" << endl;
+		outputfile << "Starting Game Board" << endl;
+	}
+	cout << "would you like to provide a map file" << endl;
+	cout << "for a map of the world in which the" << endl;
+	cout << "simulation would occur? y or n" << endl;
+	char inputChoice;
+	cin >> inputChoice;
+	if (inputChoice == 'y')
+	{
+		cout << " - 39 -";
+		string fileName;
+		cout << "what is the name of the file you would like read?" << endl;
+		cout << "please insure that your input file is as follows:" << endl;
+		cout << "columns" << endl;
+		cout << "rows" << endl;
+		cout << "empty cells as '-' living cells as 'X' with no other charachters present" << endl;
+		cout << "each row of cells should be a new line in the input file" << endl;
+		cin >> fileName;
+		if (outputMode == "c")
+		{
+			cout << " - 50 -";
+			cout << "RoseAlbrecht 2300456" << endl;
+			cout << "Starting Game Board:" << endl;
+			cout << "each row of cells should be a new line in the input file" << endl;
+		}
+		cout << " - 54 - " << endl;
+		cout << "this line will print" << endl;//my brother helped me with this 
+		cout << "this line wont" << endl;
+
+		ifstream inputFile;
+		inputFile.open(fileName);
+		int lineCount = 0;
+		string str;//temp string while reading file
+		string worldString;//will hold all the letters relevent to the world generation
+		while (getline(inputFile, str))
+		{
+			if (lineCount == 0)
+			{
+				columns = stoi(str);//this will turn the string into an int
+			}
+			if (lineCount == 1)
+			{
+				rows = stoi(str);
+			}
+			if (lineCount > 1)
+			{
+				for (char letter : str)
+				{
+					if (letter == 'X' || letter == 'x' || letter == '-')
+					{
+						worldString = worldString + letter;
+
+					}
+				}
+			}
+			lineCount += 1;
+		}
+		char world[columns][rows];
+		int tempPosition = 0;
+		lineCount = 0;
+		int columnCount;
+		for (int i = 0; i < worldString.length(); ++i)
+		{
+			lineCount = i / columns;
+			columnCount = i % columns;
+			world[columnCount][lineCount] = worldString[i];//print the string into the array
+		}
+		tempPosition = 0;
+		for (int h = 1; h <= rows; h++)//this for loop will print the initial world
+		{
+			for (int w = 1; w <= columns; w++)
+			{
+				world[w][h] = worldString[tempPosition];
+				tempPosition += 1;
+				if (outputMode == "c");
+				{
+					cout << world[w][h] << '\0';
+				}
+				if (outputMode == "txt");
+				{
+					outputfile << world[w][h];
+				}
+
+			}
+			cout << endl;
+
+		}
+		//read the file enough to get height and width
+		//implament something here to input the file and use it and a array method to make the necessary 2D array
+		if (inputChoice == 'n')
+		{
+			cout << " - 155 -" << endl;
+			cout << "how many rows would you like?" << endl;
+			cin >> rows;
+			cout << "how many columns would you like?" << endl;
+			cin >> columns;
+			cout << "what population density would you like(choose a number between 0 and 1)?" << endl;
+			double popDensity;
+			cin >> popDensity;
+			char world[columns][rows];
+			int populatedCells = popDensity * (rows*columns);
+			int actuallyPopulated = 0;
+			while (actuallyPopulated <= populatedCells)
+			{
+				cout << " - 170 -" << endl;
+				int xcoord = (rand() % columns) + 1;
+				int ycoord = (rand() % rows) + 1;
+				if ((world[xcoord][ycoord]) != 'X')
+				{
+					world[xcoord][ycoord] = 'X';
+					actuallyPopulated += 1;
+				}
+			}
+			for (int h = 1; h <= rows; h++)
+			{
+				cout << " - 183 -" << endl;
+				for (int w = 1; w <= columns; w++)
+				{
+					if ((world[w][h]) != 'X')
+					{
+						world[w][h] = '-';
+						cout << " - 189 -";
+					}
+					if (outputMode == "c");
+					{
+						cout << world[w][h] << '\0';
+					}
+					if (outputMode == "txt");
+
+					outputfile << world[w][h];
+				}
+			}
+			cout << endl;
+			cout << " - 201 -" << endl;
+		}
+		//https://stackoverflow.com/questions/12311149/how-to-print-2d-arrays-in-c
+
+	}
+}
