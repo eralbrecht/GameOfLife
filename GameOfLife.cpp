@@ -54,14 +54,75 @@ int main()
 		stringstream str;
 		cout <<"above while loop" << "\n";
 		ifstream stream(fileName);
+		int lineCount = 0;
 		while (stream.peek() != EOF)
 		{
 			cout << "streamispeeking";
 			str << (char)stream.get();
 		}
 		stream.close();
+		string columnValue;
+		string rowValue;
+		string worldString;
 		stringofletters = str.str();
 		cout << stringofletters << "string of the file";
+		for (char letter : stringofletters)
+		{
+			if (letter == '\n')//we need to seperate out the first two lines becuase theyre dimensions
+				//we also dont want charachters in the array to be the new line charachter
+			{
+				lineCount += 1;
+			}
+			else
+			{
+				//what if we get a multi digit value for the dimensions?
+			//if its a real charachter
+				if (lineCount == 0)
+				{
+					columnValue = columnValue + letter;
+					columns = stoi(columnValue);//turn the string column to an int
+				}
+				if (lineCount == 1)
+				{
+					columnValue = rowValue + letter;
+					rows = stoi(rowValue);//tun the string row to an int
+				}
+				if (lineCount > 1)//make a string of all the world charachters with no line char and no numbers
+				{
+					worldString = worldString + letter;
+				}
+				char world[columns][rows] = { worldString };
+				//if (lineCount > 1)
+			}
+		}
+		char world[columns][rows] = { worldString };
+		cout << worldString << "worldString";
+		for (int h = 1; h <= rows; h++)//this for loop will print the initial world
+		{
+			for (int w = 1; w <= columns; w++)
+			{
+				world[w][h] = letter;
+				if (outputMode == "c");
+				{
+					cout << world[w][h];
+				}
+				if (outputMode == "txt");
+				{
+					outputfile << world[w][h];
+				}
+
+			}
+			if (outputMode == "c");
+			{
+				cout << "\n";
+			}
+			if (outputMode == "txt");
+			{
+				outputfile << "\n";
+			}
+		}
+	}
+	break;
 		/*while (std::getline(inputfile, str))//used same as in assignment1
 		{
 			cout << str << "inside while loop" << "\n";
@@ -77,35 +138,7 @@ int main()
 			char world[columns][rows];
 			if (lineCount > 2)
 			{
-				for (char letter : str)
-				{
-					for (int h = 1; h <= rows; h++)
-					{
-						for (int w = 1; w <= columns; w++)
-						{
-							world[w][h] = letter;
-							if (outputMode=="c");
-							{
-								cout << world[w][h];
-							}
-							if (outputMode=="txt");
-							{
-								outputfile << world[w][h];
-							}
-
-						}
-						if (outputMode == "c");
-						{
-							cout << "\n";
-						}
-						if (outputMode == "txt");
-						{
-							outputfile << "\n";
-						}
-					}
-				}
-			}
-			break;
+				
 		}*/
 	}
 
