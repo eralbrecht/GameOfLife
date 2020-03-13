@@ -179,7 +179,7 @@ int main()
 		Classic classicGame;
 		while (true)
 		{
-			char newWorld[columns][rows] = classicGame.editCells(world[columns][rows], columns, rows);
+			char newWorld[columns][rows] = classicGame.editCells(world[], columns, rows);
 			//print newWorld
 			for (int h = 1; h <= rows; h++)
 			{
