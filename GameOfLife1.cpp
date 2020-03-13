@@ -4,18 +4,19 @@
 #include <string>
 #include <sstream>
 #include <cmath>
-//#include "Grid.h"
-//#include "Cell.cpp"
+#include "Classic.h"
+//include other game modes
 using namespace std;
 int main()
 {
 	int columns;
 	int rows;
+	int repeat;
 	//add in game type options
 	cout << "what game version would you like to play?" << endl;
 	cout << "options include donut, mirror, or classic" << endl;
 	cout << "please enter 'd' 'm' or 'c'" << endl;
-	string gameMode;
+	char gameMode;
 	cin >> gameMode;
 	cout << "would you like to print to console or a text file enter c or txt?" << endl;
 	string outputMode;
@@ -53,9 +54,6 @@ int main()
 			cout << "each row of cells should be a new line in the input file" << endl;
 		}
 		cout << " - 54 - " << endl;
-		cout << "this line will print" << endl;//my brother helped me with this 
-		cout << "this line wont" << endl;
-
 		ifstream inputFile;
 		inputFile.open(fileName);
 		int lineCount = 0;
@@ -84,7 +82,10 @@ int main()
 			}
 			lineCount += 1;
 		}
+		//initialize all worlds to the size of the simulation space
 		char world[columns][rows];
+		//char newWorld[columns][rows];
+		char archiveWorld[columns][rows];
 		int tempPosition = 0;
 		lineCount = 0;
 		int columnCount;
@@ -111,58 +112,115 @@ int main()
 				}
 
 			}
-			cout << endl;
+			if (outputMode == "c");
+			{
+				cout << endl;
+			}
+			if (outputMode == "txt");
+			{
+				outputfile << endl;
+			}
 
 		}
 		//read the file enough to get height and width
 		//implament something here to input the file and use it and a array method to make the necessary 2D array
-		if (inputChoice == 'n')
+	}
+	if (inputChoice == 'n')
+	{
+		cout << "how many rows would you like?" << endl;
+		cin >> rows;
+		cout << "how many columns would you like?" << endl;
+		cin >> columns;
+		cout << "what population density would you like(choose a number between 0 and 1)?" << endl;
+		double popDensity;
+		cin >> popDensity;
+		char world[columns][rows];
+		int populatedCells = popDensity * (rows*columns);
+		int actuallyPopulated = 0;
+		while (actuallyPopulated <= populatedCells)
 		{
-			cout << " - 155 -" << endl;
-			cout << "how many rows would you like?" << endl;
-			cin >> rows;
-			cout << "how many columns would you like?" << endl;
-			cin >> columns;
-			cout << "what population density would you like(choose a number between 0 and 1)?" << endl;
-			double popDensity;
-			cin >> popDensity;
-			char world[columns][rows];
-			int populatedCells = popDensity * (rows*columns);
-			int actuallyPopulated = 0;
-			while (actuallyPopulated <= populatedCells)
+			int xcoord = (rand() % columns) + 1;
+			int ycoord = (rand() % rows) + 1;
+			if ((world[xcoord][ycoord]) != 'X')
 			{
-				cout << " - 170 -" << endl;
-				int xcoord = (rand() % columns) + 1;
-				int ycoord = (rand() % rows) + 1;
-				if ((world[xcoord][ycoord]) != 'X')
-				{
-					world[xcoord][ycoord] = 'X';
-					actuallyPopulated += 1;
-				}
+				world[xcoord][ycoord] = 'X';
+				actuallyPopulated += 1;
 			}
-			for (int h = 1; h <= rows; h++)
+		}
+		for (int h = 1; h <= rows; h++)
+		{
+			for (int w = 1; w <= columns; w++)
 			{
-				cout << " - 183 -" << endl;
-				for (int w = 1; w <= columns; w++)
+				if ((world[w][h]) != 'X')
 				{
-					if ((world[w][h]) != 'X')
-					{
-						world[w][h] = '-';
-						cout << " - 189 -";
-					}
-					if (outputMode == "c");
-					{
-						cout << world[w][h] << '\0';
-					}
-					if (outputMode == "txt");
-
+					world[w][h] = '-';
+				}
+				if (outputMode == "c");
+				{
+					cout << world[w][h] << '\0';
+				}
+				if (outputMode == "txt");
+				{
 					outputfile << world[w][h];
 				}
 			}
-			cout << endl;
-			cout << " - 201 -" << endl;
+			if (outputMode == "c");
+			{
+				cout << endl;
+			}
+			if (outputMode == "txt");
+			{
+				outputfile << endl;
+			}
 		}
-		//https://stackoverflow.com/questions/12311149/how-to-print-2d-arrays-in-c
-
+	}
+	if (gameMode == 'c')
+	{
+		Classic classicGame;
+		while (true)
+		{
+			char newWorld[columns][rows] = classicGame.editCells(world[columns][rows], columns, rows);
+			//print newWorld
+			for (int h = 1; h <= rows; h++)
+			{
+				for (int w = 1; w <= columns; w++)
+				{
+					if ((newWorld[w][h]) != 'X')
+					{
+						newWorld[w][h] = '-';
+					}
+					if (outputMode == "c");
+					{
+						cout << newWorld[w][h] << '\0';
+					}
+					if (outputMode == "txt");
+					{
+						outputfile << newWorld[w][h];
+					}
+				}
+				if (outputMode == "c");
+				{
+					cout << endl;
+				}
+				if (outputMode == "txt");
+				{
+					outputfile << endl;
+				}
+			}
+			//shift worlds
+			if (newWorld == world || newWorld == archiveWorld)
+			{ 
+				repeat += 1;
+			}
+			if (repeat > 10)
+			{
+				cout << "your world is repeating or oscillating, simulation terminated" << endl;
+				break;
+			}
+			archiveWorld = world;
+			world = newWorld;
+		
+		}
 	}
 }
+
